@@ -1,60 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
+import List from './List'
 
-// Function Component - Properties
-// function Biodata(props) {
-//   return <span>Umurnya {props.age} </span>
-// } 
-
-// function Greeting(props) {
-//   return <h1> Halo {props.name} - <Biodata age={props.age}/></h1>
-// }
-
-// State
-class Timer extends Component {
-  constructor(props) {
+class App extends Component{
+  constructor(props){
     super(props)
     this.state = {
-      time: props.start
+      todoItem: '',
+      items: []
     }
   }
 
-  // Lifecycle
-  componentDidMount() {
-    this.addInterval = setInterval(() => this.increase(), 1000)
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.setState({
+      items: [...this.state.items, this.state.todoItem],
+      todoItem: ''
+    })
   }
 
-  componentWillUnmount() {
-    clearInterval(this.addInterval)
+  handleChange = (event) => {
+    this.setState({
+      todoItem: event.target.value
+    })
   }
 
-  increase() {
-    //update state time every one second
-    this.setState((state, props) => ({
-      time: parseInt(state.time) + 1
-    }))
-  }
-
-
-  render() {
+  render(){
     return (
-      <div> {this.state.time} </div>
-    )
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input value={this.state.todoItem} onChange={this.handleChange}/>
+          <button>Add</button>
+        </form>
+        <List items={this.state.items}/>
+      </div>
+    );
   }
-}
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Timer start="0"/>
-        {/* <Greeting name="Hilman" age="25"/> */}
-        {/* <Greeting name="Rasyi" age="15"/> */}
-      </header>
-    </div>
-  );
 }
 
 export default App;
